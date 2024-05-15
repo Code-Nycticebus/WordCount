@@ -48,6 +48,8 @@ def compile_file(exe: Executable) -> Stats:
 
 def main() -> None:
     run(["mkdir", "-p", "bin"])
+    with open("bin/.gitignore", "w") as f:
+        f.write("*")
 
     executable: list[Executable] = [
         Executable("c", "src/c/main.c", "gcc", ["-O3", "-flto"]),
