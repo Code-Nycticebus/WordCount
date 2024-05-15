@@ -1,4 +1,5 @@
 #!/bin/python3
+
 import sys
 from timeit import timeit
 from subprocess import DEVNULL, run
@@ -6,6 +7,7 @@ from os import stat
 from dataclasses import dataclass
 
 FILE = "src/c/cebus.h" if len(sys.argv) < 2 else sys.argv[1]
+NUMBER = 10 if len(sys.argv) < 2 else 1
 SORTED_BY = "run_time"
 
 
@@ -33,7 +35,7 @@ def compile_file(exe: Executable) -> Stats:
     output_file = f"bin/{exe.language}"
 
     compile_time = time_command([exe.compiler, exe.src, *exe.flags, "-o", output_file])
-    run_time = time_command([output_file, FILE], number=10)
+    run_time = time_command([output_file, FILE], number=NUMBER)
     run(["strip", output_file])
 
     return Stats(
