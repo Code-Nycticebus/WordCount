@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <sstream>
 #include <unordered_map>
 #include <vector>
 
@@ -9,18 +8,18 @@ int main(int argc, const char **argv) {
   std::unordered_map<std::string, int> occurences;
   std::vector<std::pair<std::string, int>> pairs;
 
-  std::ifstream ifs(argc < 2 ? __FILE__ : argv[1]);
-  std::string text = std::string((std::istreambuf_iterator<char>(ifs)),
-                                 (std::istreambuf_iterator<char>()));
+  const char *file = argc < 2 ? __FILE__ : argv[1];
+  std::ifstream ifs(file);
+  if (!ifs) {
+    std::cerr << "Failed to open file: " << file << std::endl;
+    return 1;
+  }
 
-  std::istringstream iss(text);
-
-  while (iss) {
-    std::string sub;
-    iss >> sub;
-    int &idx = occurences[sub];
+  std::string word;
+  while (ifs >> word) {
+    int &idx = occurences[word];
     if (idx == 0) {
-      pairs.push_back(std::pair(sub, 1));
+      pairs.emplace_back(std::pair(word, 1));
       idx = pairs.size();
     } else {
       pairs[idx - 1].second += 1;
