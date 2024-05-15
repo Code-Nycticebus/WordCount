@@ -1,5 +1,7 @@
 # Word Count
 
+Word count programm, implemented in various languages.
+
 ```terminal
 +==========+==========+==========+===========+
 | language |   size   |   run    |  compile  |
