@@ -1,12 +1,12 @@
 #!/bin/python3
+import sys
 from timeit import timeit
 from subprocess import DEVNULL, run
-from os import stat, path
+from os import stat
 from dataclasses import dataclass
 
-
-FILE = "bin/t8.shakespeare.txt"
-SORTED_BY = "compile_time"
+FILE = "src/c/cebus.h" if len(sys.argv) < 2 else sys.argv[1]
+SORTED_BY = "run_time"
 
 
 @dataclass
@@ -25,15 +25,15 @@ class Stats:
     size: float
 
 
-def time_command(args: list[str]) -> float:
-    return timeit(lambda: run(args, stdout=DEVNULL), number=1)
+def time_command(args: list[str], number=1) -> float:
+    return timeit(lambda: run(args, stdout=DEVNULL), number=number)
 
 
 def compile_file(exe: Executable) -> Stats:
     output_file = f"bin/{exe.language}"
 
     compile_time = time_command([exe.compiler, exe.src, *exe.flags, "-o", output_file])
-    run_time = time_command([output_file, FILE])
+    run_time = time_command([output_file, FILE], number=10)
     run(["strip", output_file])
 
     return Stats(
@@ -46,17 +46,6 @@ def compile_file(exe: Executable) -> Stats:
 
 def main() -> None:
     run(["mkdir", "-p", "bin"])
-    if not path.exists(FILE):
-        run(
-            [
-                "wget",
-                "https://ocw.mit.edu/ans7870/6/6.006/s08/lecturenotes/files/t8.shakespeare.txt",
-                "-O",
-                FILE,
-                "-o",
-                "/dev/null",
-            ],
-        )
 
     executable: list[Executable] = [
         Executable("c", "src/c/main.c", "gcc", ["-O3", "-flto"]),
