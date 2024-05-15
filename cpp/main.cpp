@@ -20,8 +20,8 @@ int main(int argc, const char **argv) {
     iss >> sub;
     int &idx = occurences[sub];
     if (idx == 0) {
-      idx = pairs.size() + 1;
       pairs.push_back(std::pair(sub, 1));
+      idx = pairs.size();
     } else {
       pairs[idx - 1].second += 1;
     }

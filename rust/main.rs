@@ -12,8 +12,8 @@ fn main() {
     for word in content.split_whitespace() {
         let idx = map.entry(word).or_insert(0);
         if *idx == 0 {
-            *idx = words.len() + 1;
             words.push((word, 0));
+            *idx = words.len();
         } else {
             words[*idx - 1].1 += 1;
         }
