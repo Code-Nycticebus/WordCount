@@ -8,7 +8,7 @@ from dataclasses import dataclass
 
 FILE = "src/c/cebus.h" if len(sys.argv) < 2 else sys.argv[1]
 NUMBER = 10 if len(sys.argv) < 2 else 1
-SORTED_BY = "run_time"
+SORTED_BY = "run"
 
 
 @dataclass
@@ -22,8 +22,8 @@ class Executable:
 @dataclass
 class Stats:
     language: str
-    run_time: float
-    compile_time: float
+    run: float
+    compile: float
     size: float
 
 
@@ -40,8 +40,8 @@ def compile_file(exe: Executable) -> Stats:
 
     return Stats(
         language=exe.language,
-        run_time=run_time,
-        compile_time=compile_time,
+        run=run_time,
+        compile=compile_time,
         size=stat(output_file).st_size / 1000,
     )
 
@@ -64,7 +64,7 @@ def main() -> None:
     print(f"+==========+==========+==========+===========+")
     for stat in sorted(times, key=lambda t: t.__dict__[SORTED_BY]):
         print(
-            f"| {stat.language:<8} | {stat.size: 5.0f} kb | {stat.run_time*1000:5.0f} ms | {stat.compile_time*1000:6.0f} ms |"
+            f"| {stat.language:<8} | {stat.size: 5.0f} kb | {stat.run*1000:5.0f} ms | {stat.compile*1000:6.0f} ms |"
         )
         print(f"+----------+----------+----------+-----------+")
 
