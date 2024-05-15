@@ -1,11 +1,11 @@
 #!/bin/python3
 from timeit import timeit
 from subprocess import DEVNULL, run
-from os import stat
+from os import stat, path
 from dataclasses import dataclass
 
 
-FILE = "t8.shakespeare.txt"
+FILE = "bin/t8.shakespeare.txt"
 SORTED_BY = "compile_time"
 
 
@@ -45,6 +45,19 @@ def compile_file(exe: Executable) -> Stats:
 
 
 def main() -> None:
+    run(["mkdir", "-p", "bin"])
+    if not path.exists(FILE):
+        run(
+            [
+                "wget",
+                "https://ocw.mit.edu/ans7870/6/6.006/s08/lecturenotes/files/t8.shakespeare.txt",
+                "-O",
+                FILE,
+                "-o",
+                "/dev/null",
+            ],
+        )
+
     executable: list[Executable] = [
         Executable("c", "src/c/main.c", "gcc", ["-O3", "-flto"]),
         Executable("cpp", "src/cpp/main.cpp", "g++", ["-O3", "-flto"]),
