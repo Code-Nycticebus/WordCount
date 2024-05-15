@@ -1,8 +1,14 @@
 #!/bin/bash
 mkdir -p bin
 
-set -xe
+OPTIMIZE=3
 
-gcc -o bin/c -O3 c/main.c
-g++ -o bin/cpp -O3 cpp/main.cpp
-rustc -o bin/rust -C opt-level=3 rust/main.rs
+( 
+set -xe
+gcc -o bin/c -O$OPTIMIZE c/main.c -flto 
+g++ -o bin/cpp -O$OPTIMIZE cpp/main.cpp -flto
+rustc -o bin/rust -C opt-level=$OPTIMIZE rust/main.rs
+)
+
+strip bin/*
+
