@@ -31,6 +31,7 @@ int main(int argc, const char **argv) {
             [](auto &a, auto &b) { return a.second > b.second; });
 
   for (int i = 0; i < 3; ++i) {
-    std::cout << pairs[i].first << ": " << pairs[i].second << std::endl;
+    const auto &p = pairs[i];
+    std::cout << i + 1 << ": " << p.first << ": " << p.second << std::endl;
   }
 }
