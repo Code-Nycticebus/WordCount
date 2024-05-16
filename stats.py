@@ -6,8 +6,8 @@ from subprocess import DEVNULL, run
 from os import stat
 from dataclasses import dataclass
 
-FILE = "src/c/cebus.h" if len(sys.argv) < 2 else sys.argv[1]
-NUMBER = 10 if len(sys.argv) < 2 else 1
+FILE = "t8.shakespeare.txt" if len(sys.argv) < 2 else sys.argv[1]
+NUMBER = 1
 SORTED_BY = "run"
 
 
