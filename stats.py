@@ -57,6 +57,11 @@ def main() -> None:
             compile="rustc src/rust/main.rs -C opt-level=3 -o bin/rust",
             run="bin/rust t8.shakespeare.txt",
         ),
+        Executable(
+            language="python3",
+            compile=None,
+            run="python3 src/python/main.py t8.shakespeare.txt",
+        ),
     ]
 
     times: list[Stats] = [compile_file(exe) for exe in executable]
