@@ -66,14 +66,24 @@ def main() -> None:
 
     times: list[Stats] = [compile_file(exe) for exe in executable]
 
-    print(f"+==========+===========+===========+")
-    print(f"| language |    run    |  compile  |")
-    print(f"+==========+===========+===========+")
+    output = ""
+
+    output += "+==========+===========+===========+\n"
+    output += "| language |    run    |  compile  |\n"
+    output += "+==========+===========+===========+\n"
+
     for stat in sorted(times, key=lambda t: t.__dict__[SORTED_BY]):
-        print(
-            f"| {stat.language:<8} | {stat.run*1000:6.0f} ms | {stat.compile*1000:6.0f} ms |"
-        )
-        print(f"+----------+-----------+-----------+")
+        output += f"| {stat.language:<8} | {stat.run*1000:6.0f} ms | {stat.compile*1000:6.0f} ms |\n"
+        output += "+----------+-----------+-----------+\n"
+
+    print(output)
+
+    with open("README.md", "w") as f:
+        f.write("# Word Count\n")
+        f.write("Word count programm, implemented in various languages.\n")
+        f.write("```terminal\n")
+        f.write(output)
+        f.write("```\n")
 
 
 if __name__ == "__main__":
