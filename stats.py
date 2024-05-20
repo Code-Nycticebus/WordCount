@@ -14,9 +14,7 @@ SORTED_BY = "run"
 @dataclass
 class Executable:
     language: str
-    src: str
-    compiler: str
-    flags: list[str]
+    cmd: str
 
 
 @dataclass
@@ -28,13 +26,13 @@ class Stats:
 
 
 def time_command(args: list[str], number=1) -> float:
-    return timeit(lambda: run(args, stdout=DEVNULL), number=number)
+    return timeit(lambda: run(args, stdout=DEVNULL, stderr=DEVNULL), number=number)
 
 
 def compile_file(exe: Executable) -> Stats:
     output_file = f"bin/{exe.language}"
 
-    compile_time = time_command([exe.compiler, exe.src, *exe.flags, "-o", output_file])
+    compile_time = time_command(exe.cmd.split())
     run_time = time_command([output_file, FILE], number=NUMBER)
     run(["strip", output_file])
 
@@ -52,21 +50,21 @@ def main() -> None:
         f.write("*")
 
     executable: list[Executable] = [
-        Executable("c", "src/c/main.c", "gcc", ["-O3", "-flto"]),
-        Executable("cpp", "src/cpp/main.cpp", "g++", ["-O3", "-flto"]),
-        Executable("rust", "src/rust/main.rs", "rustc", ["-C", "opt-level=3"]),
+        Executable("c", "gcc src/c/main.c -O3 -flto -o bin/c"),
+        Executable("cpp", "g++ src/cpp/main.cpp -O3 -flto -o bin/cpp"),
+        Executable("rust", "rustc src/rust/main.rs -C opt-level=3"),
     ]
 
     times: list[Stats] = [compile_file(exe) for exe in executable]
 
-    print(f"+==========+==========+==========+===========+")
-    print(f"| language |   size   |   run    |  compile  |")
-    print(f"+==========+==========+==========+===========+")
+    print(f"+==========+===========+==========+===========+")
+    print(f"| language |   size    |   run    |  compile  |")
+    print(f"+==========+===========+==========+===========+")
     for stat in sorted(times, key=lambda t: t.__dict__[SORTED_BY]):
         print(
-            f"| {stat.language:<8} | {stat.size: 5.0f} kb | {stat.run*1000:5.0f} ms | {stat.compile*1000:6.0f} ms |"
+            f"| {stat.language:<8} | {stat.size: 6.0f} kb | {stat.run*1000:5.0f} ms | {stat.compile*1000:6.0f} ms |"
         )
-        print(f"+----------+----------+----------+-----------+")
+        print(f"+----------+-----------+----------+-----------+")
 
 
 if __name__ == "__main__":
