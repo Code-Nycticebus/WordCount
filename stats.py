@@ -74,7 +74,7 @@ def main() -> None:
 
     for stat in sorted(times, key=lambda t: t.__dict__[SORTED_BY]):
         output += f"| {stat.language:<8} | {stat.run*1000:6.0f} ms | {stat.compile*1000:6.0f} ms |\n"
-        output += "+----------+-----------+-----------+\n"
+    output += "+==========+===========+===========+\n"
 
     print(output)
 
