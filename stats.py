@@ -43,9 +43,14 @@ def main() -> None:
 
     executable: list[Executable] = [
         Executable(
-            language="c",
-            compile="gcc src/c/main.c -O3 -flto -o bin/c",
-            run="bin/c t8.shakespeare.txt",
+            language="cebus.h",
+            compile="gcc src/c/cebus.c -O3 -flto -o bin/cebus",
+            run="bin/cebus t8.shakespeare.txt",
+        ),
+        Executable(
+            language="nsl.h",
+            compile="gcc src/c/nsl.c -O3 -flto -o bin/nsl",
+            run="bin/nsl t8.shakespeare.txt",
         ),
         Executable(
             language="cpp",
@@ -66,16 +71,21 @@ def main() -> None:
 
     times: list[Stats] = [compile_file(exe) for exe in executable]
 
-    output = ""
+    output = []
 
-    output += "+==========+===========+===========+\n"
-    output += "| language |    run    |  compile  |\n"
-    output += "+==========+===========+===========+\n"
+    output.append("+==========+===========+===========+===========+")
+    output.append("| language |       run |   compile |     total |")
+    output.append("+==========+===========+=======================+")
 
-    for stat in sorted(times, key=lambda t: t.__dict__[SORTED_BY]):
-        output += f"| {stat.language:<8} | {stat.run*1000:6.0f} ms | {stat.compile*1000:6.0f} ms |\n"
-    output += "+==========+===========+===========+\n"
 
+    output += [
+        f"| {stat.language:<8} | {stat.run*1000:6.0f} ms | {stat.compile*1000:6.0f} ms | {(stat.compile+stat.run)*1000:6.0f} ms |"
+        for stat in sorted(times, key=lambda t: t.__dict__[SORTED_BY])
+    ]
+
+    output.append("+==========+===========+===========+===========+")
+
+    output = "\n".join(output)
     print(output)
 
     with open("README.md", "w") as f:
