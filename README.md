@@ -3,10 +3,11 @@ Word count programm, implemented in various languages.
 ```terminal
 +==========+===========+===========+===========+
 | language |       run |   compile |     total |
-+==========+===========+=======================+
-| nsl.h    |     33 ms |    101 ms |    134 ms |
-| rust     |     40 ms |    163 ms |    204 ms |
-| cebus.h  |     40 ms |    277 ms |    318 ms |
-| cpp      |     60 ms |    467 ms |    528 ms |
-| python3  |    126 ms |      0 ms |    126 ms |
-+==========+===========+===========+===========+```
++==========+===========+===========+===========+
+| nsl.h    |     31 ms |    109 ms |    140 ms |
+| rust     |     38 ms |    165 ms |    203 ms |
+| cebus.h  |     44 ms |    279 ms |    323 ms |
+| cpp      |     63 ms |    473 ms |    536 ms |
+| python3  |    125 ms |      0 ms |    125 ms |
++==========+===========+===========+===========+
+```

@@ -75,7 +75,7 @@ def main() -> None:
 
     output.append("+==========+===========+===========+===========+")
     output.append("| language |       run |   compile |     total |")
-    output.append("+==========+===========+=======================+")
+    output.append("+==========+===========+===========+===========+")
 
 
     output += [
@@ -93,7 +93,7 @@ def main() -> None:
         f.write("Word count programm, implemented in various languages.\n")
         f.write("```terminal\n")
         f.write(output)
-        f.write("```\n")
+        f.write("\n```\n")
 
 
 if __name__ == "__main__":
