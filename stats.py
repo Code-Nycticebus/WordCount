@@ -69,8 +69,6 @@ def main() -> None:
         ),
     ]
 
-    times: list[Stats] = [compile_file(exe) for exe in executable]
-
     output = []
 
     output.append("+==========+===========+===========+===========+")
@@ -78,9 +76,10 @@ def main() -> None:
     output.append("+==========+===========+===========+===========+")
 
 
+    times = sorted(map(compile_file, executable), key=lambda t: t.__dict__[SORTED_BY])
     output += [
         f"| {stat.language:<8} | {stat.run*1000:6.0f} ms | {stat.compile*1000:6.0f} ms | {(stat.compile+stat.run)*1000:6.0f} ms |"
-        for stat in sorted(times, key=lambda t: t.__dict__[SORTED_BY])
+        for stat in times
     ]
 
     output.append("+==========+===========+===========+===========+")
