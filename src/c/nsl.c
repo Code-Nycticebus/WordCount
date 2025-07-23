@@ -12,13 +12,12 @@ i32 cmp(const void *a, const void *b) {
 }
 
 int main(int argc, const char **argv) {
-    int result = 0;
     nsl_Str filename = argc < 2 ? NSL_STR(__FILE__) : nsl_str_from_cstr(argv[1]);
 
     nsl_Arena arena = {0};
 
     FILE* file;
-    if (nsl_file_open(&file, filename, "r")) NSL_DEFER(-1);
+    if (nsl_file_open(&file, filename, "r")) NSL_PANIC("could not open file");
     nsl_Str content = nsl_file_read_str(file, &arena);
     nsl_file_close(file);
 
@@ -44,7 +43,6 @@ int main(int argc, const char **argv) {
         printf("%ld: " NSL_STR_REPR ": %ld\n", i + 1, NSL_STR_ARG(o->word), o->count);
     }
 
-defer:
     nsl_arena_free(&arena);
-    return result;
+    return 0;
 }
